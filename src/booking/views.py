@@ -2,10 +2,12 @@ from rest_framework import status, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 
+from .documentation import booking_schema, room_schema
 from .models import Booking, Room
 from .serializers import BookingSerializer, RoomSerializer
 
 
+@room_schema
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
@@ -14,6 +16,7 @@ class RoomViewSet(viewsets.ModelViewSet):
     ordering = ("id",)
 
 
+@booking_schema
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer

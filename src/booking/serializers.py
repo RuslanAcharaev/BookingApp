@@ -18,16 +18,29 @@ class BookingSerializer(serializers.ModelSerializer):
     def validate(self, data):
         date_start = data.get("date_start")
         date_end = data.get("date_end")
+        room = data.get("room")
 
-        if date_start and date_end:
+        if date_start and date_end and room:
             if date_start > date_end:
                 raise serializers.ValidationError(
-                    "Дата окончания не может быть раньше даты начала"
+                    {"date_start": "Дата окончания не может быть раньше даты начала"}
                 )
 
             if date_start < timezone.now().date():
                 raise serializers.ValidationError(
-                    "Нельзя бронировать на прошедшие даты"
+                    {"date_start": "Нельзя бронировать на прошедшие даты"}
                 )
+
+        overlapping_bookings = Booking.objects.filter(
+            room=room, date_start__lte=date_end, date_end__gte=date_start
+        )
+
+        if self.instance and self.instance.pk:
+            overlapping_bookings = overlapping_bookings.exclude(pk=self.instance.pk)
+
+        if overlapping_bookings.exists():
+            raise serializers.ValidationError(
+                {"room": "Комната уже забронирована на указанные даты"}
+            )
 
         return data
