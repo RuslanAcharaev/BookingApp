@@ -1,7 +1,6 @@
 from drf_spectacular.utils import (
     OpenApiExample,
     OpenApiParameter,
-    OpenApiResponse,
     extend_schema,
     extend_schema_view,
 )
@@ -33,12 +32,12 @@ room_schema = extend_schema_view(
                     {
                         "id": 1,
                         "description": "Стандартный номер c видом на город",
-                        "price": "5000.00",
+                        "price": 5000.00,
                     },
                     {
                         "id": 2,
                         "description": "Люкс c видом на море",
-                        "price": "15000.00",
+                        "price": 15000.00,
                     },
                 ],
                 response_only=True,
@@ -65,7 +64,7 @@ room_schema = extend_schema_view(
                 value={
                     "id": 1,
                     "description": "Стандартный номер c видом на город",
-                    "price": "5000.00",
+                    "price": 5000.00,
                 },
                 response_only=True,
                 status_codes=["200"],
@@ -88,7 +87,7 @@ room_schema = extend_schema_view(
                 value={
                     "id": 3,
                     "description": "Новый улучшенный номер",
-                    "price": "7500.00",
+                    "price": 7500.00,
                 },
                 response_only=True,
                 status_codes=["201"],
@@ -113,7 +112,7 @@ room_schema = extend_schema_view(
                 "Пример запроса",
                 value={
                     "description": "Обновленное описание номера",
-                    "price": "8500.00",
+                    "price": 8500.00,
                 },
                 request_only=True,
                 status_codes=["200"],
@@ -123,7 +122,7 @@ room_schema = extend_schema_view(
                 value={
                     "id": 1,
                     "description": "Обновленное описание номера",
-                    "price": "8500.00",
+                    "price": 8500.00,
                 },
                 response_only=True,
                 status_codes=["200"],
@@ -146,7 +145,7 @@ room_schema = extend_schema_view(
         examples=[
             OpenApiExample(
                 "Пример запроса (только цена)",
-                value={"price": "9000.00"},
+                value={"price": 9000.00},
                 request_only=True,
                 status_codes=["200"],
             ),
@@ -161,7 +160,7 @@ room_schema = extend_schema_view(
                 value={
                     "id": 1,
                     "description": "Новое описание номера",
-                    "price": "9000.00",
+                    "price": 9000.00,
                 },
                 response_only=True,
                 status_codes=["200"],
@@ -208,7 +207,7 @@ booking_schema = extend_schema_view(
                 ],
             )
         ],
-        responses={200: BookingSerializer(many=True)},
+        responses={200: BookingSerializer(many=True), 400: BookingSerializer},
         examples=[
             OpenApiExample(
                 "Пример успешного ответа",
@@ -267,7 +266,7 @@ booking_schema = extend_schema_view(
     create=extend_schema(
         summary="Создать новое бронирование",
         description="Создает новое бронирование c проверкой доступности комнаты на указанные даты.",
-        responses={201: BookingSerializer, 400: OpenApiResponse},
+        responses={201: BookingSerializer, 400: BookingSerializer},
         examples=[
             OpenApiExample(
                 "Пример успешного запроса",
