@@ -74,7 +74,7 @@ room_schema = extend_schema_view(
     create=extend_schema(
         summary="Создать новый номер",
         description="Создает новый номер в системе.",
-        responses={201: RoomSerializer},
+        responses={201: RoomSerializer, 400: RoomSerializer},
         examples=[
             OpenApiExample(
                 "Пример запроса",
@@ -91,6 +91,12 @@ room_schema = extend_schema_view(
                 },
                 response_only=True,
                 status_codes=["201"],
+            ),
+            OpenApiExample(
+                "Пример ошибки - отрицательная цена",
+                value={"price": ["Цена не может быть отрицательной"]},
+                response_only=True,
+                status_codes=["400"],
             ),
         ],
     ),

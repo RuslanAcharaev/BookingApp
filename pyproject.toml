@@ -9,7 +9,10 @@ dependencies = [
     "djangorestframework>=3.16.1",
     "psycopg2-binary",
     "python-dotenv",
-    "drf-spectacular"
+    "drf-spectacular",
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
 ]
 
 [tool.uv]
@@ -62,3 +65,9 @@ known-third-party = ["django", "rest_framework", "psycopg2", "dotenv"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+pythonpath = ["src"]
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = ["--tb=short"]

@@ -9,6 +9,16 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = "__all__"
 
+    def validate(self, data):
+        price = data.get("price")
+
+        if price:
+            if price < 0:
+                raise serializers.ValidationError(
+                    {"price": "Цена не может быть отрицательной"}
+                )
+        return data
+
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
